@@ -12,8 +12,4 @@ public class Category {
     private String name;
     private String description;
 
-    public void addExpense() {
-        "select * from expenses where date between :from and :to;"
-    }
-
 }
