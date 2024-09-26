@@ -1,4 +1,4 @@
-package com.hbv.baukur;
+package com.baukur;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +8,7 @@ class BaukurApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }
