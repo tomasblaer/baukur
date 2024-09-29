@@ -1,4 +1,4 @@
-package com.baukur.api.expenses.domain;
+package com.baukur.api.categories.expenses.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
