@@ -23,9 +23,15 @@ public class CategoriesController {
     }
 
     @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
+    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
         Category createdCategory = categoryService.createCategory(category);
         return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
+    }
+
+    @PatchMapping
+    public ResponseEntity<Category> editCategory(@RequestBody Category category) {
+        Category editedCategory =  categoryService.updateCategory(category);
+        return new ResponseEntity<>(editedCategory, HttpStatus.OK);
     }
 
     @DeleteMapping

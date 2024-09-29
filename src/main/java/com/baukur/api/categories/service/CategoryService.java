@@ -18,6 +18,10 @@ public class CategoryService {
         return categoriesRepository.save(category);
     }
 
+    public Category updateCategory(Category category) {
+        return categoriesRepository.save(category);
+    }
+
     public void deleteCategory() {
         log.info("Deleting category");
     }

@@ -1,7 +1,7 @@
-package com.baukur.api.expenses.controller;
+package com.baukur.api.categories.expenses.controller;
 
-import com.baukur.api.expenses.domain.Expense;
-import com.baukur.api.expenses.service.ExpenseService;
+import com.baukur.api.categories.expenses.domain.Expense;
+import com.baukur.api.categories.expenses.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +20,15 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public ResponseEntity<Expense> createExpense(@RequestBody Expense expense) {
+    public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {
         Expense createdExpense = expenseService.createExpense(expense);
         return new ResponseEntity<>(createdExpense, HttpStatus.CREATED);
+    }
+
+    @PatchMapping
+    public ResponseEntity<Expense> editExpense(@RequestBody Expense expense) {
+        Expense editedExpense = expenseService.updateExpense(expense);
+        return new ResponseEntity<>(editedExpense, HttpStatus.OK);
     }
 
 
