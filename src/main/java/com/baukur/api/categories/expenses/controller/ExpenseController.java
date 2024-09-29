@@ -14,17 +14,20 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
+    // Get expense
     @GetMapping
     public Expense getExpenses() {
         return new Expense();
     }
 
+    // Add expense
     @PostMapping
     public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {
         Expense createdExpense = expenseService.createExpense(expense);
         return new ResponseEntity<>(createdExpense, HttpStatus.CREATED);
     }
 
+    // Edit expense
     @PatchMapping
     public ResponseEntity<Expense> editExpense(@RequestBody Expense expense) {
         Expense editedExpense = expenseService.updateExpense(expense);
