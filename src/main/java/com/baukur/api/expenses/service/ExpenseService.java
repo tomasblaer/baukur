@@ -1,7 +1,7 @@
-package com.baukur.api.categories.expenses.service;
+package com.baukur.api.expenses.service;
 
-import com.baukur.api.categories.expenses.domain.Expense;
-import com.baukur.api.categories.expenses.repository.ExpenseRepository;
+import com.baukur.api.expenses.domain.Expense;
+import com.baukur.api.expenses.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

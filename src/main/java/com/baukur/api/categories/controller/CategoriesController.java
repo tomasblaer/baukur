@@ -19,27 +19,28 @@ public class CategoriesController {
 
     // Get Categories
     @GetMapping
-    public Category getCategories() {
-        return new Category("Category 1", "This is category 1", 50000);
+    public ResponseEntity<?> getCategories() {
+        return new ResponseEntity<>(categoryService.getCategories(), HttpStatus.OK);
     }
 
     // Add Category
     @PostMapping
-    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
+    public ResponseEntity<?> addCategory(@RequestBody Category category) {
         Category createdCategory = categoryService.createCategory(category);
         return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
     }
 
     // Edit Category
     @PatchMapping
-    public ResponseEntity<Category> editCategory(@RequestBody Category category) {
+    public ResponseEntity<?> editCategory(@RequestBody Category category) {
         Category editedCategory =  categoryService.updateCategory(category);
         return new ResponseEntity<>(editedCategory, HttpStatus.OK);
     }
 
     // Delete Category
     @DeleteMapping
-    public void deleteCategory() {
-        categoryService.deleteCategory();
+    public ResponseEntity<?> deleteCategory(@RequestParam Long id) {
+        Category deleted = categoryService.deleteCategory(id);
+        return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
 }

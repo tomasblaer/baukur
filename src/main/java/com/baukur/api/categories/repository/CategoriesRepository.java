@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface CategoriesRepository extends JpaRepository<Category, Long> {
 
+    Category deleteCategoryById(Long id);
+
 }

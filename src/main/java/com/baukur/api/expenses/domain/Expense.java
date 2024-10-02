@@ -1,4 +1,4 @@
-package com.baukur.api.categories.domain;
+package com.baukur.api.expenses.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,18 +8,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Category {
+public class Expense {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String description;
-    private Long iconId;
+    private Long comment;
+    private Long amount;
+    private Date date;
+    private Long categoryId;
     private Long userId;
 
 }
