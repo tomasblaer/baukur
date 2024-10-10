@@ -3,15 +3,19 @@ package com.baukur.api.categories.controller;
 import com.baukur.api.categories.domain.Category;
 import com.baukur.api.categories.service.CategoryService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/categories")
 @AllArgsConstructor
+@Slf4j
 public class CategoriesController {
 
     @Autowired

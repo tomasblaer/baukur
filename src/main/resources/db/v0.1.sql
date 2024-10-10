@@ -1,12 +1,12 @@
-CREATE TABLE user (
-    id integer PRIMARY KEY,
+CREATE TABLE "user" (
+    id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     iconId integer
 );
 
 CREATE TABLE expense (
-    id integer PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     comment VARCHAR(255),
     amount integer NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE expense (
 );
 
 CREATE TABLE category (
-    id integer PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255),
     icon_id integer,
