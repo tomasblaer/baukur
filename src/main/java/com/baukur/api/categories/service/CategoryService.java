@@ -32,4 +32,8 @@ public class CategoryService {
         return categoriesRepository.deleteCategoryById(id);
     }
 
+    public List<Category> getCategoriesByUserId(Long userId) {
+        return categoriesRepository.findCategoriesByUserId(userId);
+    }
+
 }

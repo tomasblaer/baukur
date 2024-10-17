@@ -2,12 +2,14 @@ package com.baukur.api.categories.controller;
 
 import com.baukur.api.categories.domain.Category;
 import com.baukur.api.categories.service.CategoryService;
+import com.baukur.api.user.domain.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -23,8 +25,10 @@ public class CategoriesController {
 
     // Get Categories
     @GetMapping
-    public ResponseEntity<?> getCategories() {
+    public ResponseEntity<?> getCategories(@AuthenticationPrincipal UserDetailsImpl user) {
+//        return new ResponseEntity<>(categoryService.getCategoriesByUserId(user.getId()), HttpStatus.OK);
         return new ResponseEntity<>(categoryService.getCategories(), HttpStatus.OK);
+
     }
 
     // Add Category

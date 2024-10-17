@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +20,9 @@ public class Category {
     private Long id;
     private String name;
     private String description;
+    @JsonIgnore
     private Long iconId;
+    @JsonIgnore
     private Long userId;
 
 }
