@@ -20,5 +20,6 @@ CREATE TABLE category (
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255),
     icon_id integer,
-    user_id integer
+    user_id integer,
+    hidden boolean DEFAULT FALSE
 );
