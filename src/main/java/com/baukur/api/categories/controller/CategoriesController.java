@@ -31,6 +31,26 @@ public class CategoriesController {
 
     }
 
+    @PatchMapping("/hide")
+    public ResponseEntity<?> hideCategory(@RequestParam Long id, @AuthenticationPrincipal UserDetailsImpl user) {
+        try {
+            Category category = categoryService.hideCategory(id, user);
+            return new ResponseEntity<>(category, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to hide category", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping("/unhide")
+    public ResponseEntity<?> unhideCategory(@RequestParam Long id, @AuthenticationPrincipal UserDetailsImpl user) {
+        try {
+            Category category = categoryService.unhideCategory(id, user);
+            return new ResponseEntity<>(category, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to unhide category", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // Add Category
     @PostMapping
     public ResponseEntity<?> addCategory(@RequestBody Category category) {

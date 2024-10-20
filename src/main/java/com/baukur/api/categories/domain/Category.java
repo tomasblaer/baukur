@@ -20,6 +20,7 @@ public class Category {
     private Long id;
     private String name;
     private String description;
+    private boolean hidden;
     @JsonIgnore
     private Long iconId;
     @JsonIgnore
