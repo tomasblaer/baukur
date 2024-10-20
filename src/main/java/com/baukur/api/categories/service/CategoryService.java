@@ -23,11 +23,23 @@ public class CategoryService {
         return categoriesRepository.findAll();
     }
 
-    public Category createCategory(Category category) {
+    public Category createCategory(Category category, UserDetailsImpl user) {
+        category.setUserId(user.getId());
         return categoriesRepository.save(category);
     }
 
-    public Category updateCategory(Category category) {
+    public Category updateCategory(Category category, UserDetailsImpl user) {
+        Optional<Category> existingCategory = categoriesRepository.findById(category.getId());
+        if (existingCategory.isEmpty()) {
+            throw new RuntimeException("Category not found");
+        } else if (!Objects.equals(existingCategory.get().getUserId(), user.getId())) {
+            throw new RuntimeException("Category does not belong to user");
+        } else if (!Objects.equals(category.getUserId(), existingCategory.get().getUserId())) {
+            throw new RuntimeException("Category user id does not match");
+        } else {
+            existingCategory.get().setName(category.getName());
+        }
+
         return categoriesRepository.save(category);
     }
 

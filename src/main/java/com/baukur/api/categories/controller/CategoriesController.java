@@ -7,12 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/categories")
@@ -25,10 +22,12 @@ public class CategoriesController {
 
     // Get Categories
     @GetMapping
-    public ResponseEntity<?> getCategories(@AuthenticationPrincipal UserDetailsImpl user) {
-//        return new ResponseEntity<>(categoryService.getCategoriesByUserId(user.getId()), HttpStatus.OK);
-        return new ResponseEntity<>(categoryService.getCategories(), HttpStatus.OK);
-
+    public ResponseEntity<?> getCategoriesForUser(@AuthenticationPrincipal UserDetailsImpl user) {
+        try {
+            return new ResponseEntity<>(categoryService.getCategoriesByUserId(user.getId()), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to get categories", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PatchMapping("/hide")
@@ -53,15 +52,15 @@ public class CategoriesController {
 
     // Add Category
     @PostMapping
-    public ResponseEntity<?> addCategory(@RequestBody Category category) {
-        Category createdCategory = categoryService.createCategory(category);
+    public ResponseEntity<?> addCategory(@RequestBody Category category, @AuthenticationPrincipal UserDetailsImpl user) {
+        Category createdCategory = categoryService.createCategory(category, user);
         return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
     }
 
     // Edit Category
     @PatchMapping
-    public ResponseEntity<?> editCategory(@RequestBody Category category) {
-        Category editedCategory =  categoryService.updateCategory(category);
+    public ResponseEntity<?> editCategory(@RequestBody Category category, @AuthenticationPrincipal UserDetailsImpl user) {
+        Category editedCategory =  categoryService.updateCategory(category, user);
         return new ResponseEntity<>(editedCategory, HttpStatus.OK);
     }
 
