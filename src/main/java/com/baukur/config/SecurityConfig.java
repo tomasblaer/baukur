@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .requestMatchers("/login**").permitAll()
                 .requestMatchers("/user**").permitAll()
                 .anyRequest().authenticated())
-                .exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED)))
+//                .exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED)))
                 .formLogin(f -> f.successHandler((request, response, authentication) -> {
                     if (request.getHeader("Origin") != null) {
                         response.setHeader("Location", request.getHeader("Origin"));
