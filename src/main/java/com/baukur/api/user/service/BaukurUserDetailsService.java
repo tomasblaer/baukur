@@ -24,6 +24,10 @@ public class BaukurUserDetailsService implements UserDetailsService {
         return new UserDetailsImpl(user.getId(), user.getEmail(), user.getPassword(), null);
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public User createUser(User user) {
         return userRepository.save(user);
     }

@@ -20,7 +20,7 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Long comment;
+    private String comment;
     private Long amount;
     private Date date;
     private Long categoryId;

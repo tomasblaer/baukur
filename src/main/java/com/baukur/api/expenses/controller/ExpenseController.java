@@ -41,8 +41,8 @@ public class ExpenseController {
 
     // Add expense
     @PostMapping
-    public ResponseEntity<?> addExpense(@RequestBody Expense expense) {
-        Expense createdExpense = expenseService.createExpense(expense);
+    public ResponseEntity<?> addExpense(@RequestBody Expense expense, @AuthenticationPrincipal UserDetailsImpl user) {
+        Expense createdExpense = expenseService.createExpense(expense, user);
         return new ResponseEntity<>(createdExpense, HttpStatus.CREATED);
     }
 

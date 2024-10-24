@@ -1,7 +1,6 @@
 package com.baukur.config;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
+
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,21 +8,17 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.core.Authentication;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -33,26 +28,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+//                .exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> {
+//                            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+//                                new Http403ForbiddenEntryPoint().commence(request, response, authException);
+//                            } else {
+//                                response.setStatus(HttpServletResponse.SC_OK);
+//                            }}))
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/login**").permitAll()
                 .requestMatchers("/user**").permitAll()
                 .anyRequest().authenticated())
-//                .exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED)))
                 .formLogin(f -> f.successHandler((request, response, authentication) -> {
-                    if (request.getHeader("Origin") != null) {
-                        response.setHeader("Location", request.getHeader("Origin"));
-                        response.setStatus(302);
-                    }
+                    response.sendRedirect("/");
                 })).logout(l -> l.logoutSuccessHandler((request, response, authentication) -> {
-                    if (request.getHeader("Origin") != null) {
-                        response.setHeader("Location", request.getHeader("Origin"));
-                        response.setStatus(302);
-                    }
+                    response.sendRedirect("/login");
                 }).deleteCookies("JSESSIONID"))
                 .httpBasic(Customizer.withDefaults())
                 ;
+        http.addFilterBefore(new AlreadyAuthenticatedFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

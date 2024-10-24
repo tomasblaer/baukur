@@ -29,7 +29,8 @@ public class ExpenseService {
     }
 
 
-    public Expense createExpense(Expense expense) {
+    public Expense createExpense(Expense expense, UserDetailsImpl user) {
+        expense.setUserId(user.getId());
         return expenseRepository.save(expense);
     }
 
