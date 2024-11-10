@@ -68,6 +68,28 @@ public class CategoriesController {
         return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
     }
 
+
+    @PatchMapping
+    public ResponseEntity<?> editCategoryName(@RequestParam Long id, @RequestParam String name, @AuthenticationPrincipal UserDetailsImpl user) {
+        try {
+            Category category = categoryService.editCategoryName(id, name, user);
+            return new ResponseEntity<>(category, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to edit category name", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping
+    public ResponseEntity<?> editCategoryDescription(@RequestParam Long id, @RequestParam String description, @AuthenticationPrincipal UserDetailsImpl user) {
+        try {
+            Category category = categoryService.editCategoryDescription(id, description, user);
+            return new ResponseEntity<>(category, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to edit category description", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     // Edit Category
     @PatchMapping
     public ResponseEntity<?> editCategory(@RequestBody Category category, @AuthenticationPrincipal UserDetailsImpl user) {
