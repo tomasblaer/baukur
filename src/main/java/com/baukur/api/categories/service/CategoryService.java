@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -96,12 +97,38 @@ public class CategoryService {
         return categoriesRepository.save(existingCategory.get());
     }
 
-    public Category deleteCategory(Long id) {
-        return categoriesRepository.deleteCategoryById(id);
+    public void deleteCategory(Long id, UserDetailsImpl user) {
+        Optional<Category> existingCategory = categoriesRepository.findById(id);
+        if (existingCategory.isEmpty()) {
+            throw new RuntimeException("Category not found");
+        } else if (!Objects.equals(existingCategory.get().getUserId(), user.getId())) {
+            throw new RuntimeException("Category does not belong to user");
+        }
+        categoriesRepository.deleteById(id);
+    }
+
+    public void deleteManyCategories(List<Long> ids, UserDetailsImpl user) {
+        List<Long> notFoundIds = new ArrayList<>();
+        for (Long id : ids) {
+            Optional<Category> existingCategory = categoriesRepository.findById(id);
+            if (existingCategory.isEmpty()) {
+                notFoundIds.add(id);
+            } else if (!Objects.equals(existingCategory.get().getUserId(), user.getId())) {
+                throw new RuntimeException("Category does not belong to user");
+            }
+        }
+        if (!notFoundIds.isEmpty()) {
+            throw new RuntimeException("Categories not found: " + notFoundIds);
+        }
+        categoriesRepository.deleteAllById(ids);
     }
 
     public List<Category> getCategoriesByUserId(Long userId) {
         return categoriesRepository.findCategoriesByUserId(userId);
+    }
+
+    public List<Category> getHiddenCategoriesByUserId(Long userId) {
+        return categoriesRepository.findCategoriesByUserIdAndHiddenIsTrue(userId);
     }
 
 }

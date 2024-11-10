@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/categories")
 @AllArgsConstructor
@@ -37,6 +39,15 @@ public class CategoriesController {
             return new ResponseEntity<>(category, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Failed to hide category", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/hidden")
+    public ResponseEntity<?> getHiddenCategoriesForUser(@AuthenticationPrincipal UserDetailsImpl user) {
+        try {
+            return new ResponseEntity<>(categoryService.getHiddenCategoriesByUserId(user.getId()), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to get hidden categories", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -88,8 +99,23 @@ public class CategoriesController {
 
     // Delete Category
     @DeleteMapping
-    public ResponseEntity<?> deleteCategory(@RequestParam Long id) {
-        Category deleted = categoryService.deleteCategory(id);
-        return new ResponseEntity<>(deleted, HttpStatus.OK);
+    public ResponseEntity<?> deleteCategory(@RequestParam Long id, @AuthenticationPrincipal UserDetailsImpl user) {
+        try {
+            categoryService.deleteCategory(id, user);
+            return new ResponseEntity<>("Category deleted", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to delete category", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+    @DeleteMapping("/deleteMany")
+    public ResponseEntity<?> deleteManyCategories(@RequestParam List<Long> ids, @AuthenticationPrincipal UserDetailsImpl user) {
+        try {
+            categoryService.deleteManyCategories(ids, user);
+            return new ResponseEntity<>("Categories deleted", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to delete categories", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

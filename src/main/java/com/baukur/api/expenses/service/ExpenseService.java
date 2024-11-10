@@ -24,6 +24,16 @@ public class ExpenseService {
         return expense.get();
     }
 
+    public void deleteExpense(Long id, UserDetailsImpl user) {
+        Optional<Expense> expense = expenseRepository.findById(id);
+        if (expense.isEmpty()) {
+            throw new RuntimeException("Expense not found");
+        } else if (!expense.get().getUserId().equals(user.getId())) {
+            throw new RuntimeException("Expense does not belong to user");
+        }
+        expenseRepository.deleteById(id);
+    }
+
     public List<Expense> getExpensesByCategoryId(Long categoryId, UserDetailsImpl user) {
         return expenseRepository.findExpenseByCategoryIdAndUserId(categoryId, user.getId());
     }

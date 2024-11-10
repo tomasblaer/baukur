@@ -26,4 +26,7 @@ public class Category {
     @JsonIgnore
     private Long userId;
 
+    @OneToMany(mappedBy = "categoryId", cascade = CascadeType.REMOVE)
+    private List<Expense> expenses;
+
 }
