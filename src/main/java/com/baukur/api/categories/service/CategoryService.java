@@ -78,4 +78,8 @@ public class CategoryService {
         return categoriesRepository.findCategoriesByUserId(userId);
     }
 
+    public List<Category> getHiddenCategoriesByUserId(Long userId) {
+        return categoriesRepository.findCategoriesByUserIdAndHiddenIsTrue(userId);
+    }
+
 }

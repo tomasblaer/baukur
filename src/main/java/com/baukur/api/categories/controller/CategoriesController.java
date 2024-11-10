@@ -40,6 +40,15 @@ public class CategoriesController {
         }
     }
 
+    @GetMapping("/hidden")
+    public ResponseEntity<?> getHiddenCategoriesForUser(@AuthenticationPrincipal UserDetailsImpl user) {
+        try {
+            return new ResponseEntity<>(categoryService.getHiddenCategoriesByUserId(user.getId()), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to get hidden categories", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PatchMapping("/unhide")
     public ResponseEntity<?> unhideCategory(@RequestParam Long id, @AuthenticationPrincipal UserDetailsImpl user) {
         try {

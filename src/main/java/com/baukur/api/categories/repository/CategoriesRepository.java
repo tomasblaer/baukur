@@ -14,4 +14,6 @@ public interface CategoriesRepository extends JpaRepository<Category, Long> {
 
     List<Category> findCategoriesByUserId(Long userId);
 
+    List<Category> findCategoriesByUserIdAndHiddenIsTrue(Long userId);
+
 }
