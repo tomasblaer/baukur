@@ -53,6 +53,4 @@ public class ExpenseController {
         return new ResponseEntity<>(editedExpense, HttpStatus.OK);
     }
 
-    @Get
-
 }
