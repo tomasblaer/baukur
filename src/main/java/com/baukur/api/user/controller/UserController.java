@@ -61,7 +61,7 @@ public class UserController {
     @PutMapping
     public ResponseEntity<?> editUser(@AuthenticationPrincipal UserDetailsImpl user, @RequestBody User newUser) {
         try {
-            newUser.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+            newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt()));
             userDetailsService.editUser(user.getId(), newUser);
             return new ResponseEntity<>("User updated", HttpStatus.OK);
         } catch (Exception e) {
