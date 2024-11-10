@@ -70,6 +70,32 @@ public class CategoryService {
         return categoriesRepository.save(existingCategory.get());
     }
 
+    public Category editCategoryName(Long id, String name, UserDetailsImpl user) {
+        Optional<Category> existingCategory = categoriesRepository.findById(id);
+        if (existingCategory.isEmpty()) {
+            throw new RuntimeException("Category not found");
+        } else if (!Objects.equals(existingCategory.get().getUserId(), user.getId())) {
+            throw new RuntimeException("Category does not belong to user");
+        } else {
+            existingCategory.get().setName(name);
+        }
+
+        return categoriesRepository.save(existingCategory.get());
+    }
+
+    public Category editCategoryDescription(Long id, String description, UserDetailsImpl user) {
+        Optional<Category> existingCategory = categoriesRepository.findById(id);
+        if (existingCategory.isEmpty()) {
+            throw new RuntimeException("Category not found");
+        } else if (!Objects.equals(existingCategory.get().getUserId(), user.getId())) {
+            throw new RuntimeException("Category does not belong to user");
+        } else {
+            existingCategory.get().setDescription(description);
+        }
+
+        return categoriesRepository.save(existingCategory.get());
+    }
+
     public Category deleteCategory(Long id) {
         return categoriesRepository.deleteCategoryById(id);
     }
