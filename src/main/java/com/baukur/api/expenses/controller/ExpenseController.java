@@ -46,6 +46,16 @@ public class ExpenseController {
         return new ResponseEntity<>(createdExpense, HttpStatus.CREATED);
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteExpense(@RequestParam Long id, @AuthenticationPrincipal UserDetailsImpl user) {
+        try {
+            expenseService.deleteExpense(id, user);
+            return new ResponseEntity<>("Expense deleted", HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete expense");
+        }
+    }
+
     // Edit expense
     @PatchMapping
     public ResponseEntity<?> editExpense(@RequestBody Expense expense) {
