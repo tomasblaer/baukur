@@ -35,6 +35,7 @@ public class UserController {
             return new ResponseEntity<>("Failed to register user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @DeleteMapping
     public ResponseEntity<?> deleteUser(@AuthenticationPrincipal UserDetailsImpl user) {
         try {
@@ -43,6 +44,29 @@ public class UserController {
         } catch (Exception e) {
             log.error("Failed to delete user", e);
             return new ResponseEntity<>("Failed to delete user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping
+    public ResponseEntity<?> editUsername(@AuthenticationPrincipal UserDetailsImpl user, String newEmail) {
+        try {
+            userDetailsService.editUsername(user.getId(), newEmail);
+            return new ResponseEntity<>("Username updated", HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Failed to update username", e);
+            return new ResponseEntity<>("Failed to update username", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<?> editUser(@AuthenticationPrincipal UserDetailsImpl user, @RequestBody User newUser) {
+        try {
+            newUser.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+            userDetailsService.editUser(user.getId(), newUser);
+            return new ResponseEntity<>("User updated", HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Failed to update user", e);
+            return new ResponseEntity<>("Failed to update user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
