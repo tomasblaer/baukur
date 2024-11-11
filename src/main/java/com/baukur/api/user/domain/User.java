@@ -7,6 +7,12 @@ import lombok.Data;
 @Data
 public class User {
 
+    public User(UserDetailsImpl user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

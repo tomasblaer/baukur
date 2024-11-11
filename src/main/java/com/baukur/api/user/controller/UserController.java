@@ -50,8 +50,9 @@ public class UserController {
     @PatchMapping
     public ResponseEntity<?> editUsername(@AuthenticationPrincipal UserDetailsImpl user, String newEmail) {
         try {
-            user.setEmail(newEmail);
-            userDetailsService.saveUser(user);
+            User editUser = new User(user);
+            editUser.setEmail(newEmail);
+            userDetailsService.saveUser(editUser);
             return new ResponseEntity<>("Username updated", HttpStatus.OK);
         } catch (Exception e) {
             log.error("Failed to update username", e);
