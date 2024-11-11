@@ -28,13 +28,9 @@ public class BaukurUserDetailsService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
-    public User createUser(User user) {
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
-
-    public void editUsername(Long id, String email) { userRepository.editUsernameById(id, email); }
-
-    public void editUser(Long id, User user) { userRepository.editUserById(id, user); }
 
     public void deleteUser(Long id) { userRepository.deleteById(id); }
 }

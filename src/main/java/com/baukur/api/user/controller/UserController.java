@@ -28,7 +28,7 @@ public class UserController {
                 return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
             }
             user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-            userDetailsService.createUser(user);
+            userDetailsService.saveUser(user);
             return new ResponseEntity<>("New user registered", HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Failed to register user", e);
@@ -50,7 +50,8 @@ public class UserController {
     @PatchMapping
     public ResponseEntity<?> editUsername(@AuthenticationPrincipal UserDetailsImpl user, String newEmail) {
         try {
-            userDetailsService.editUsername(user.getId(), newEmail);
+            user.setEmail(newEmail);
+            userDetailsService.saveUser(user);
             return new ResponseEntity<>("Username updated", HttpStatus.OK);
         } catch (Exception e) {
             log.error("Failed to update username", e);
@@ -62,7 +63,7 @@ public class UserController {
     public ResponseEntity<?> editUser(@AuthenticationPrincipal UserDetailsImpl user, @RequestBody User newUser) {
         try {
             newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt()));
-            userDetailsService.editUser(user.getId(), newUser);
+            userDetailsService.saveUser(newUser);
             return new ResponseEntity<>("User updated", HttpStatus.OK);
         } catch (Exception e) {
             log.error("Failed to update user", e);
