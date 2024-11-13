@@ -69,7 +69,7 @@ public class CategoriesController {
     }
 
 
-    @PatchMapping
+    @PatchMapping("/editName")
     public ResponseEntity<?> editCategoryName(@RequestParam Long id, @RequestParam String name, @AuthenticationPrincipal UserDetailsImpl user) {
         try {
             Category category = categoryService.editCategoryName(id, name, user);
@@ -79,7 +79,7 @@ public class CategoriesController {
         }
     }
 
-    @PatchMapping
+    @PatchMapping("/editDescription")
     public ResponseEntity<?> editCategoryDescription(@RequestParam Long id, @RequestParam String description, @AuthenticationPrincipal UserDetailsImpl user) {
         try {
             Category category = categoryService.editCategoryDescription(id, description, user);
