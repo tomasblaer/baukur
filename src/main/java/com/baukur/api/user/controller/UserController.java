@@ -1,5 +1,6 @@
 package com.baukur.api.user.controller;
 
+import com.baukur.api.user.domain.LoggedInUser;
 import com.baukur.api.user.domain.User;
 import com.baukur.api.user.domain.UserDetailsImpl;
 import com.baukur.api.user.service.BaukurUserDetailsService;
@@ -42,7 +43,7 @@ public class UserController {
             if (user == null) {
                 return new ResponseEntity<>("No user logged in", HttpStatus.UNAUTHORIZED);
             } else {
-                return new ResponseEntity<>(user.getEmail(), HttpStatus.OK);
+                return new ResponseEntity<>(new LoggedInUser(user), HttpStatus.OK);
             }
         } catch (Exception e) {
             log.error("Failed to get user", e);
@@ -62,10 +63,10 @@ public class UserController {
     }
 
     @PatchMapping
-    public ResponseEntity<?> editUsername(@AuthenticationPrincipal UserDetailsImpl user, String newEmail) {
+    public ResponseEntity<?> editUsername(@AuthenticationPrincipal UserDetailsImpl user, @RequestParam String email) {
         try {
             User editUser = new User(user);
-            editUser.setEmail(newEmail);
+            editUser.setEmail(email);
             userDetailsService.saveUser(editUser);
             return new ResponseEntity<>("Username updated", HttpStatus.OK);
         } catch (Exception e) {
@@ -78,6 +79,7 @@ public class UserController {
     public ResponseEntity<?> editUser(@AuthenticationPrincipal UserDetailsImpl user, @RequestBody User newUser) {
         try {
             newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt()));
+            newUser.setId(user.getId());
             userDetailsService.saveUser(newUser);
             return new ResponseEntity<>("User updated", HttpStatus.OK);
         } catch (Exception e) {

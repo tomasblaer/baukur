@@ -12,7 +12,7 @@ public interface CategoriesRepository extends JpaRepository<Category, Long> {
 
     Category deleteCategoryById(Long id);
 
-    List<Category> findCategoriesByUserId(Long userId);
+    List<Category> findCategoriesByUserIdAndHiddenIsFalse(Long userId);
 
     List<Category> findCategoriesByUserIdAndHiddenIsTrue(Long userId);
 

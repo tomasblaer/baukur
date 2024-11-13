@@ -20,9 +20,6 @@ public class CategoryService {
 
     private CategoriesRepository categoriesRepository;
 
-    public List<Category> getCategories () {
-        return categoriesRepository.findAll();
-    }
 
     public Category createCategory(Category category, UserDetailsImpl user) {
         category.setUserId(user.getId());
@@ -35,10 +32,9 @@ public class CategoryService {
             throw new RuntimeException("Category not found");
         } else if (!Objects.equals(existingCategory.get().getUserId(), user.getId())) {
             throw new RuntimeException("Category does not belong to user");
-        } else if (!Objects.equals(category.getUserId(), existingCategory.get().getUserId())) {
-            throw new RuntimeException("Category user id does not match");
         } else {
-            existingCategory.get().setName(category.getName());
+            category.setId(existingCategory.get().getId());
+            category.setUserId(user.getId());
         }
 
         return categoriesRepository.save(category);
@@ -124,7 +120,7 @@ public class CategoryService {
     }
 
     public List<Category> getCategoriesByUserId(Long userId) {
-        return categoriesRepository.findCategoriesByUserId(userId);
+        return categoriesRepository.findCategoriesByUserIdAndHiddenIsFalse(userId);
     }
 
     public List<Category> getHiddenCategoriesByUserId(Long userId) {

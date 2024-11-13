@@ -1,14 +1,17 @@
 package com.baukur.api.categories.controller;
 
 import com.baukur.api.categories.domain.Category;
+import com.baukur.api.categories.domain.DeleteManyCategoriesPayload;
 import com.baukur.api.categories.service.CategoryService;
 import com.baukur.api.user.domain.UserDetailsImpl;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -63,7 +66,7 @@ public class CategoriesController {
 
     // Add Category
     @PostMapping
-    public ResponseEntity<?> addCategory(@RequestBody Category category, @AuthenticationPrincipal UserDetailsImpl user) {
+    public ResponseEntity<?> addCategory(@RequestBody @Valid Category category, @AuthenticationPrincipal UserDetailsImpl user) {
         Category createdCategory = categoryService.createCategory(category, user);
         return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
     }
@@ -109,9 +112,9 @@ public class CategoriesController {
     }
 
     @DeleteMapping("/deleteMany")
-    public ResponseEntity<?> deleteManyCategories(@RequestParam List<Long> ids, @AuthenticationPrincipal UserDetailsImpl user) {
+    public ResponseEntity<?> deleteManyCategories(@RequestBody DeleteManyCategoriesPayload payload, @AuthenticationPrincipal UserDetailsImpl user) {
         try {
-            categoryService.deleteManyCategories(ids, user);
+            categoryService.deleteManyCategories(payload.getIds(), user);
             return new ResponseEntity<>("Categories deleted", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Failed to delete categories", HttpStatus.INTERNAL_SERVER_ERROR);
