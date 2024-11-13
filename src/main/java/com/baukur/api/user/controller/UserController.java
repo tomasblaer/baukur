@@ -36,6 +36,20 @@ public class UserController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> getLoggedInUser(@AuthenticationPrincipal UserDetailsImpl user) {
+        try {
+            if (user == null) {
+                return new ResponseEntity<>("No user logged in", HttpStatus.UNAUTHORIZED);
+            } else {
+                return new ResponseEntity<>(user.getEmail(), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            log.error("Failed to get user", e);
+            return new ResponseEntity<>("Failed to get user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @DeleteMapping
     public ResponseEntity<?> deleteUser(@AuthenticationPrincipal UserDetailsImpl user) {
         try {

@@ -2,9 +2,11 @@ package com.baukur.api.user.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class User {
 
     public User(UserDetailsImpl user) {

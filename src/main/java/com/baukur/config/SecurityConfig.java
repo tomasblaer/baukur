@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .requestMatchers("/user**").permitAll()
                 .anyRequest().authenticated())
                 .formLogin(f -> f.successHandler((request, response, authentication) -> {
-                    response.sendRedirect("/");
+                    response.sendRedirect("/dashboard");
                 })).logout(l -> l.logoutSuccessHandler((request, response, authentication) -> {
                     response.sendRedirect("/login");
                 }).deleteCookies("JSESSIONID"))
