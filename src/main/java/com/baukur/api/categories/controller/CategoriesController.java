@@ -111,10 +111,10 @@ public class CategoriesController {
         }
     }
 
-    @DeleteMapping("/deleteMany")
-    public ResponseEntity<?> deleteManyCategories(@RequestBody DeleteManyCategoriesPayload payload, @AuthenticationPrincipal UserDetailsImpl user) {
+    @PostMapping("/deleteMany")
+    public ResponseEntity<?> deleteManyCategories(@RequestBody List<Long> ids, @AuthenticationPrincipal UserDetailsImpl user) {
         try {
-            categoryService.deleteManyCategories(payload.getIds(), user);
+            categoryService.deleteManyCategories(ids, user);
             return new ResponseEntity<>("Categories deleted", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Failed to delete categories", HttpStatus.INTERNAL_SERVER_ERROR);
