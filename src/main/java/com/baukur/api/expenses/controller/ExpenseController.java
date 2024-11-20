@@ -1,5 +1,6 @@
 package com.baukur.api.expenses.controller;
 
+import com.baukur.api.categories.domain.CategoryComparison;
 import com.baukur.api.expenses.domain.Expense;
 import com.baukur.api.expenses.service.ExpenseService;
 import com.baukur.api.user.domain.UserDetailsImpl;
@@ -39,6 +40,12 @@ public class ExpenseController {
         }
     }
 
+    @GetMapping("/compare")
+    public ResponseEntity<List<CategoryComparison>> compareUserExpenses(@RequestParam Long id, @AuthenticationPrincipal UserDetailsImpl user) {
+        List<CategoryComparison> comparisons = expenseService.compareExpenses(id);
+        return new ResponseEntity<>(comparisons, HttpStatus.OK);
+    }
+
     // Add expense
     @PostMapping
     public ResponseEntity<?> addExpense(@RequestBody Expense expense, @AuthenticationPrincipal UserDetailsImpl user) {
@@ -62,5 +69,6 @@ public class ExpenseController {
         Expense editedExpense = expenseService.updateExpense(expense);
         return new ResponseEntity<>(editedExpense, HttpStatus.OK);
     }
+
 
 }

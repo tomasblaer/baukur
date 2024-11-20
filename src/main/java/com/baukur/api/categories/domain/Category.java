@@ -30,3 +30,4 @@ public class Category {
     private List<Expense> expenses;
 
 }
+
