@@ -28,6 +28,8 @@ public class Category {
     private Long iconId;
     @JsonIgnore
     private Long userId;
+    @JsonIgnore
+    private Long defaultCategoryId;
 
     @OneToMany(mappedBy = "categoryId", cascade = CascadeType.REMOVE)
     private List<Expense> expenses;

@@ -1,6 +1,8 @@
 package com.baukur.api.categories.controller;
 
 import com.baukur.api.categories.domain.Category;
+import com.baukur.api.categories.domain.CreateDefaultCategoriesPayload;
+import com.baukur.api.categories.domain.DefaultCategories;
 import com.baukur.api.categories.domain.DeleteManyCategoriesPayload;
 import com.baukur.api.categories.service.CategoryService;
 import com.baukur.api.user.domain.UserDetailsImpl;
@@ -69,6 +71,26 @@ public class CategoriesController {
     public ResponseEntity<?> addCategory(@RequestBody @Valid Category category, @AuthenticationPrincipal UserDetailsImpl user) {
         Category createdCategory = categoryService.createCategory(category, user);
         return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/default")
+    public ResponseEntity<?> createDefaultCategories(@RequestBody CreateDefaultCategoriesPayload payload) {
+        try {
+            List<Category> defaultCategories = categoryService.createDefaultCategories(payload.getUserId(), payload.getIds());
+            return new ResponseEntity<>(defaultCategories, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to create default categories", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/default")
+    public ResponseEntity<?> getDefaultCategories() {
+        try {
+            List<DefaultCategories> defaultCategories = categoryService.getDefaultCategories();
+            return new ResponseEntity<>(defaultCategories, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to get default categories", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
