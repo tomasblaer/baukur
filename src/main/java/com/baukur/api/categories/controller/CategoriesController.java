@@ -1,7 +1,8 @@
 package com.baukur.api.categories.controller;
 
 import com.baukur.api.categories.domain.Category;
-import com.baukur.api.categories.domain.DeleteManyCategoriesPayload;
+import com.baukur.api.categories.domain.CreateCustomCategoriesPayload;
+import com.baukur.api.categories.domain.DefaultCategory;
 import com.baukur.api.categories.service.CategoryService;
 import com.baukur.api.user.domain.UserDetailsImpl;
 import jakarta.validation.Valid;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -71,6 +71,16 @@ public class CategoriesController {
         return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
     }
 
+    @PostMapping("/default")
+    public ResponseEntity<?> createDefaultCategories(@RequestBody CreateCustomCategoriesPayload payload) {
+        try {
+            List<Category> defaultCategories = categoryService.createDefaultCategories(payload.getUserId(), payload.getIds());
+            return new ResponseEntity<>(defaultCategories, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to create default categories", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @PatchMapping("/editName")
     public ResponseEntity<?> editCategoryName(@RequestParam Long id, @RequestParam String name, @AuthenticationPrincipal UserDetailsImpl user) {
@@ -111,13 +121,23 @@ public class CategoriesController {
         }
     }
 
-    @DeleteMapping("/deleteMany")
-    public ResponseEntity<?> deleteManyCategories(@RequestBody DeleteManyCategoriesPayload payload, @AuthenticationPrincipal UserDetailsImpl user) {
+    @PostMapping("/deleteMany")
+    public ResponseEntity<?> deleteManyCategories(@RequestBody List<Long> ids, @AuthenticationPrincipal UserDetailsImpl user) {
         try {
-            categoryService.deleteManyCategories(payload.getIds(), user);
+            categoryService.deleteManyCategories(ids, user);
             return new ResponseEntity<>("Categories deleted", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Failed to delete categories", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/default")
+    public ResponseEntity<?> getDefaultCategories() {
+        try {
+            List<DefaultCategory> defaultCategories = categoryService.getDefaultCategories();
+            return new ResponseEntity<>(defaultCategories, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to get default categories", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

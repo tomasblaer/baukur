@@ -1,6 +1,5 @@
 package com.baukur.api.categories.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteManyCategoriesPayload {
-    @JsonProperty("ids")
-    private List<Long> ids;
+public class CreateCustomCategoriesPayload {
+    List<Long> ids;
+    Long userId;
 }

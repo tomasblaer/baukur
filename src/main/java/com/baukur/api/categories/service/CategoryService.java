@@ -1,16 +1,15 @@
 package com.baukur.api.categories.service;
 
 import com.baukur.api.categories.domain.Category;
+import com.baukur.api.categories.domain.DefaultCategory;
 import com.baukur.api.categories.repository.CategoriesRepository;
+import com.baukur.api.categories.repository.DefaultCategoriesRepository;
 import com.baukur.api.user.domain.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -19,6 +18,9 @@ public class CategoryService {
     @Autowired
 
     private CategoriesRepository categoriesRepository;
+
+    @Autowired
+    private DefaultCategoriesRepository defaultCategoriesRepository;
 
 
     public Category createCategory(Category category, UserDetailsImpl user) {
@@ -119,6 +121,16 @@ public class CategoryService {
         categoriesRepository.deleteAllById(ids);
     }
 
+    public HashMap<Long, String> getCategoryNameMap(UserDetailsImpl user) {
+        List<Category> category = categoriesRepository.findCategoriesByUserIdAndHiddenIsFalse(user.getId());
+        HashMap<Long, String> categoryMap = new HashMap<>();
+        if (category.isEmpty()) {
+            throw new RuntimeException("Category not found");
+        }
+        category.forEach(c -> categoryMap.put(c.getId(), c.getName()));
+        return categoryMap;
+    }
+
     public List<Category> getCategoriesByUserId(Long userId) {
         return categoriesRepository.findCategoriesByUserIdAndHiddenIsFalse(userId);
     }
@@ -126,5 +138,23 @@ public class CategoryService {
     public List<Category> getHiddenCategoriesByUserId(Long userId) {
         return categoriesRepository.findCategoriesByUserIdAndHiddenIsTrue(userId);
     }
+
+    public List<DefaultCategory> getDefaultCategories() {
+        return defaultCategoriesRepository.findAll();
+    }
+
+    public List<Category> createDefaultCategories(Long userId, List<Long> ids) {
+        List<DefaultCategory> defaultCategories = defaultCategoriesRepository.findAllById(ids);
+        List<Category> categories = new ArrayList<>();
+        for (DefaultCategory defaultCategory : defaultCategories) {
+            Category category = new Category();
+            category.setName(defaultCategory.getName());
+            category.setUserId(userId);
+            category.setDefaultCategoryId(defaultCategory.getId());
+            categories.add(categoriesRepository.save(category));
+        }
+        return categories;
+    }
+
 
 }
