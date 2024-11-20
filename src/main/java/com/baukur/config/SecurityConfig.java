@@ -28,22 +28,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                .exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> {
-//                            if (SecurityContextHolder.getContext().getAuthentication() == null) {
-//                                new Http403ForbiddenEntryPoint().commence(request, response, authException);
-//                            } else {
-//                                response.setStatus(HttpServletResponse.SC_OK);
-//                            }}))
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/login**").permitAll()
                 .requestMatchers("/user**").permitAll()
+                .requestMatchers("/categories/default").permitAll()
                 .anyRequest().authenticated())
                 .formLogin(f -> f.successHandler((request, response, authentication) -> {
                     response.sendRedirect("/dashboard");
                 })).logout(l -> l.logoutSuccessHandler((request, response, authentication) -> {
-                    response.sendRedirect("/login");
+                    response.sendRedirect("/");
                 }).deleteCookies("JSESSIONID"))
                 .httpBasic(Customizer.withDefaults())
                 ;
@@ -55,7 +50,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:4173"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowCredentials(true);

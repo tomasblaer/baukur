@@ -29,8 +29,8 @@ public class UserController {
                 return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
             }
             user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-            userDetailsService.saveUser(user);
-            return new ResponseEntity<>("New user registered", HttpStatus.CREATED);
+            User createdUser = userDetailsService.saveUser(user);
+            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Failed to register user", e);
             return new ResponseEntity<>("Failed to register user", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -41,7 +41,7 @@ public class UserController {
     public ResponseEntity<?> getLoggedInUser(@AuthenticationPrincipal UserDetailsImpl user) {
         try {
             if (user == null) {
-                return new ResponseEntity<>("No user logged in", HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
             } else {
                 return new ResponseEntity<>(new LoggedInUser(user), HttpStatus.OK);
             }
