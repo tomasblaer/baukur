@@ -14,7 +14,6 @@ public class UserDetailsImpl implements UserDetails {
 
     private Long id;
     private String email;
-    @JsonIgnore
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;

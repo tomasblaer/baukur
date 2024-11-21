@@ -24,11 +24,8 @@ public class Category {
     private String name;
     private String description;
     private boolean hidden;
-    @JsonIgnore
     private Long iconId;
-    @JsonIgnore
     private Long userId;
-    @JsonIgnore
     private Long defaultCategoryId;
 
     @OneToMany(mappedBy = "categoryId", cascade = CascadeType.REMOVE)
