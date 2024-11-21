@@ -1,6 +1,5 @@
 package com.baukur.api.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,6 @@ public class User {
 
     private String email;
 
-    @JsonIgnore
     private String password;
 
     @Column(name = "iconid")
