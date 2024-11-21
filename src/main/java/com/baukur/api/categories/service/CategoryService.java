@@ -1,9 +1,9 @@
 package com.baukur.api.categories.service;
 
 import com.baukur.api.categories.domain.Category;
-import com.baukur.api.categories.domain.DefaultCategories;
+import com.baukur.api.categories.domain.DefaultCategory;
 import com.baukur.api.categories.repository.CategoriesRepository;
-import com.baukur.api.categories.repository.DefaultCategoriesRepository;
+import com.baukur.api.categories.repository.DefaultCategoryRepository;
 import com.baukur.api.user.domain.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class CategoryService {
     private CategoriesRepository categoriesRepository;
 
     @Autowired
-    private DefaultCategoriesRepository defaultCategoriesRepository;
+    private DefaultCategoryRepository defaultCategoriesRepository;
 
     public Category createCategory(Category category, UserDetailsImpl user) {
         category.setUserId(user.getId());
@@ -138,14 +138,14 @@ public class CategoryService {
         return categoriesRepository.findCategoriesByUserIdAndHiddenIsTrue(userId);
     }
 
-    public List<DefaultCategories> getDefaultCategories() {
+    public List<DefaultCategory> getDefaultCategories() {
         return defaultCategoriesRepository.findAll();
     }
 
     public List<Category> createDefaultCategories(Long userId, List<Long> ids) {
-        List<DefaultCategories> defaultCategories = defaultCategoriesRepository.findAllById(ids);
+        List<DefaultCategory> defaultCategories = defaultCategoriesRepository.findAllById(ids);
         List<Category> categories = new ArrayList<>();
-        for (DefaultCategories defaultCategory : defaultCategories) {
+        for (DefaultCategory defaultCategory : defaultCategories) {
             Category category = new Category();
             category.setName(defaultCategory.getName());
             category.setUserId(userId);

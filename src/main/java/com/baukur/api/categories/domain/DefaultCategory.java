@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 
-public class DefaultCategories {
+public class DefaultCategory {
     @Id
     private Long id;
     private String name;
