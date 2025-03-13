@@ -17,9 +17,10 @@ public class AlreadyAuthenticatedFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (request.getRequestURI().equals("/login") && authentication != null) {
-            response.sendRedirect("/");
-    } else if (authentication == null && !request.getRequestURI().equals("/login") && !request.getRequestURI().equals("/user") && !request.getRequestURI().equals("/categories/default")) {
+//        if (request.getRequestURI().equals("/login") && authentication != null) {
+//            response.sendRedirect("/");
+//    } else
+        if (authentication == null && !request.getRequestURI().equals("/login") && !request.getRequestURI().equals("/user") && !request.getRequestURI().equals("/categories/default")) {
             response.setStatus(403);
         } else {
             filterChain.doFilter(request, response);

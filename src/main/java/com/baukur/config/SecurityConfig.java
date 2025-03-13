@@ -33,12 +33,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/login**").permitAll()
                 .requestMatchers("/user**").permitAll()
+                .requestMatchers("/logout").permitAll()
                 .requestMatchers("/categories/default").permitAll()
                 .anyRequest().authenticated())
-                .formLogin(f -> f.successHandler((request, response, authentication) -> {
-                    response.sendRedirect("/dashboard");
-                })).logout(l -> l.logoutSuccessHandler((request, response, authentication) -> {
-                    response.sendRedirect("/");
+                .formLogin(f -> {
+                    f.successHandler((request, response, authentication) -> response.setStatus(200));
+                    f.failureHandler((request, response, exception) -> response.setStatus(401));
+                }).logout(l -> l.logoutSuccessHandler((request, response, authentication) -> {
                 }).deleteCookies("JSESSIONID"))
                 .httpBasic(Customizer.withDefaults())
                 ;
