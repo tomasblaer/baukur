@@ -4,6 +4,9 @@ import com.baukur.api.user.domain.User;
 import com.baukur.api.user.domain.UserDetailsImpl;
 import com.baukur.api.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,7 +32,11 @@ public class BaukurUserDetailsService implements UserDetailsService {
     }
 
     public User saveUser(User user) {
-        return userRepository.save(user);
+        User newUser = userRepository.save(user);
+        // not working >:(
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return newUser;
     }
 
     public void deleteUser(Long id) { userRepository.deleteById(id); }
