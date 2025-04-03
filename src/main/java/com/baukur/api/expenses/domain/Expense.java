@@ -22,7 +22,7 @@ public class Expense {
     private String name;
     private String comment;
     private Long amount;
-    @JsonFormat(pattern = "dd/MM/YYYY")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private Long categoryId;
     private Long userId;

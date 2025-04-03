@@ -1,19 +1,13 @@
 package com.baukur.api.expenses.service;
 
-import com.baukur.api.categories.domain.Category;
 import com.baukur.api.categories.service.CategoryService;
 import com.baukur.api.expenses.domain.Expense;
-import com.baukur.api.expenses.domain.ExpenseAmountGraphResponse;
 import com.baukur.api.expenses.domain.GraphExpense;
 import com.baukur.api.expenses.repository.ExpenseRepository;
 import com.baukur.api.user.domain.UserDetailsImpl;
-import org.hibernate.graph.Graph;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
